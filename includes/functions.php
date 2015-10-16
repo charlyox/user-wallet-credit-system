@@ -61,11 +61,17 @@ function woo_add_custom_general_fields_save ( $post_id )
  *
  * @since 1.1 - Now fired on woocommerce_order_status_completed action. This is a change to rid infinite reloads 
  * of credits after pruchase.
+ *
+ * @since 1.3 Edited by @charles on 2015, October, 16th. The customer is now actually credited with the amount, vs. before when it
+ * was the shop manager who became the order's author. This allows payment via check or bank transfer. 
+ *
  */
 add_action( 'woocommerce_order_status_completed', 'add_credits_to_user_account' );
 function add_credits_to_user_account ( $order_id ) 
 {
 	$order = new WC_Order( $order_id );
+    	$customer_id = get_post_meta( $order->id , '_customer_user', true );
+
 	if ( count( $order->get_items() ) > 0 ) 
 	{
 		foreach ( $order->get_items() as $item ) 
@@ -73,9 +79,9 @@ function add_credits_to_user_account ( $order_id )
     	$product_name = $item['name'];
     	$product_id = $item['product_id'];
     	$product_variation_id = $item['variation_id'];
-    	$credit_amount = floatval(get_post_meta($product_id, "_credits_amount", true));
-    	$current_users_wallet_ballance = floatval(get_user_meta(get_current_user_id(),"_uw_balance", true));
-    	update_user_meta(get_current_user_id(), "_uw_balance", ($credit_amount+$current_users_wallet_ballance));
+    	$credit_amount = floatval( get_post_meta( $product_id, "_credits_amount", true ) );
+    	$current_users_wallet_ballance = floatval( get_user_meta( $customer_id, "_uw_balance", true ) );
+    	$la62_success = update_user_meta( $customer_id, "_uw_balance", ( $credit_amount + $current_users_wallet_ballance ) ); 	
 		}
 	}
 }
@@ -84,8 +90,11 @@ function add_credits_to_user_account ( $order_id )
  * [custom_woocommerce_auto_complete_order description]
  * @param  [type] $order_id [description]
  * @return [type]           [description]
+ * @since 1.3 : edited by @charles on 2015, October 16th - this was a hack to prevent the amount of credit being given to the shop manager, 
+ * but prevented to use other payment types than credit card. Let's keep it some time to check for regressions. 
+ * from now on, it's deactivated. 
  */
-add_action( 'woocommerce_thankyou', 'custom_woocommerce_auto_complete_order' );
+//add_action( 'woocommerce_thankyou', 'custom_woocommerce_auto_complete_order' );
 function custom_woocommerce_auto_complete_order( $order_id ) 
 {
   if ( !$order_id )
