@@ -2,9 +2,9 @@
 /**
  * Plugin Name: User Wallet Credit System
  * Plugin URI: http://justin-greer.cm
- * Version: 1.2
+ * Version: 1.3
  * Description: Gives the ability for users to load their wallet balance using Woocommerce. The wallet balance can then be used (if enabled) to make purchases.
- * Author: Justin Greer
+ * Author: Justin Greer & Charles Senard
  * Author URI: http://justin-greer.com
  * License: GPL2
  *
@@ -17,6 +17,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  *
  * @author  Justin Greer <justin@justin-greer.com>
+ * @author Charles Senard <charles@charles-senard.com>
  * @package User Wallet
 */
 if ( ! function_exists( 'add_filter' ) ) 
