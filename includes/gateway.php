@@ -14,7 +14,7 @@ function init_wpuw_gateway ( $methods )
  *
  * @class 		WC_Gateway_WPUW
  * @extends		WC_Payment_Gateway
- * @version		0.1
+ * @version		1.3
  * @author Justin Greer <justin@justin-greer.com>
  */
 if( class_exists('WC_Payment_Gateway') ):
@@ -27,7 +27,7 @@ class WC_Gateway_WPUW extends WC_Payment_Gateway {
 		$this->id                 = 'wpuw';
 		$this->icon               = apply_filters( 'woocommerce_cod_icon', '' );
 		$this->method_title       = __( 'User Wallet', 'woocommerce' );
-		$this->method_description = __( 'Have your customers pay with thier virtal wallet balance.', 'woocommerce' );
+		$this->method_description = __( 'Have your customers pay with their virtual wallet balance.', 'woocommerce' );
 		$this->has_fields         = false;
 
 		/** load the settings */
@@ -222,7 +222,7 @@ class WC_Gateway_WPUW extends WC_Payment_Gateway {
 		{
 			if(has_term( 'credit', 'product_cat', $values['product_id']))
 			{
-			  wc_add_notice( __('<strong>Payment error:</strong>', 'woothemes') . ' You can not purchase virtul money with virtual money. Please choose another payment method.', 'error' );
+			  wc_add_notice( __('<strong>Payment error:</strong>', 'woothemes') . ' You can not purchase virtual money with virtual money. Please choose another payment method.', 'error' );
 				return;
 			}
 		}
@@ -256,7 +256,7 @@ class WC_Gateway_WPUW extends WC_Payment_Gateway {
 		/** If the user wants mark the order complete */
 		//$options = get_option("vw_options");
 		//if(isset($options['auto_complete_status']) && $options['auto_complete_status']=1)
-		$order->update_status( 'completed', __( 'Payment completed use Virtual Wallet', 'woocommerce' ) );
+		$order->update_status( 'completed', __( 'Payment completed using Virtual Wallet', 'woocommerce' ) );
 
 		/** reduce stock levels */
 		$order->reduce_order_stock();
