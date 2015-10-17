@@ -37,18 +37,30 @@ function uw_redirect_to_checkout ()
 	}
 }
 
+/**
+*
+* prevent from adding more than one credit product in the cart
+* @since 1.3.1 @charles added the filter to allow developers not to choose this functionality.
+* TODO : Allow the user to choose in the admin side what he'd like to do.
+*
+*/
 add_filter ('woocommerce_add_cart_item_data', 'uw_clear_cart_items');
-function uw_clear_cart_items ( $cart_item_data )
-{
-	global $woocommerce;
-	foreach ($woocommerce->cart->get_cart() as $cart_item_key => $cart_item)
-	{
-  	if( has_term('credit', 'product_cat', $cart_item['product_id']) )
-  	{
-  		global $woocommerce;
-  		$woocommerce->cart->set_quantity( $cart_item_key, 0 );
-    }
-  }
+function uw_clear_cart_items ( $cart_item_data ){
+	// Allows developers to hook and modify the behavior 
+	// about credit product not being able to be added more than once to the cart.
+	$do_it = apply_filters( 'uwcs_dont_allow_more_than_1_credit_product_in_cart', true, $cart_item_data );
+	if (! $do_it ){
+		return $cart_item_data;
+	}
+	else {
+		global $woocommerce;
+		foreach ($woocommerce->cart->get_cart() as $cart_item_key => $cart_item){
+  			if( has_term('credit', 'product_cat', $cart_item['product_id']) ){
+  				global $woocommerce;
+  				$woocommerce->cart->set_quantity( $cart_item_key, 0 );
+  			}
+    	}
+  	}
   return $cart_item_data;
 }
 
